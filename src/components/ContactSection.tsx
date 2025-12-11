@@ -1,8 +1,9 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef, useState } from "react";
-import { Mail, Phone, Linkedin, Send, CheckCircle } from "lucide-react";
+import { Mail, Phone, Linkedin, Send } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import emailjs from "@emailjs/browser";
 
 const contactInfo = [
   {
@@ -25,8 +26,13 @@ const contactInfo = [
   },
 ];
 
+const EMAILJS_SERVICE_ID = "service_tvre7a9";
+const EMAILJS_TEMPLATE_ID = "template_pjfzt6h";
+const EMAILJS_PUBLIC_KEY = "3vbOFKtijdhUrtrS4";
+
 export const ContactSection = () => {
   const ref = useRef(null);
+  const formRef = useRef<HTMLFormElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
@@ -48,16 +54,35 @@ export const ContactSection = () => {
 
     setIsSubmitting(true);
     
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    
-    toast({
-      title: "Message sent!",
-      description: "Thank you for reaching out. I'll get back to you soon.",
-    });
-    
-    setFormData({ name: "", email: "", message: "" });
-    setIsSubmitting(false);
+    try {
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        {
+          from_name: formData.name,
+          from_email: formData.email,
+          message: formData.message,
+          to_name: "Sri Ganesh",
+        },
+        EMAILJS_PUBLIC_KEY
+      );
+      
+      toast({
+        title: "Message sent!",
+        description: "Thank you for reaching out. I'll get back to you soon.",
+      });
+      
+      setFormData({ name: "", email: "", message: "" });
+    } catch (error) {
+      console.error("EmailJS error:", error);
+      toast({
+        title: "Failed to send message",
+        description: "Please try again or contact me directly via email.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
