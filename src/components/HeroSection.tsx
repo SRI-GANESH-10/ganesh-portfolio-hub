@@ -111,7 +111,7 @@ export const HeroSection = () => {
                 <img
                   src={profileImage}
                   alt="Sri Ganesh Sankuratri"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover scale-[0.85]"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/10 to-transparent" />
               </motion.div>
