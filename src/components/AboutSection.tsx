@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
 import { GraduationCap, Code2, Palette, Zap } from "lucide-react";
-import profileImage from "@/assets/profile-placeholder.png";
 
 const highlights = [
   { icon: Code2, label: "React Expert", description: "2+ years experience" },
@@ -33,57 +32,36 @@ export const AboutSection = () => {
           </h2>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          {/* Image Side */}
+        <div className="max-w-3xl mx-auto">
           <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            initial={{ opacity: 0, y: 40 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="relative"
-          >
-            <div className="relative aspect-square max-w-md mx-auto">
-              <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary/20 to-primary/5 -rotate-6" />
-              <div className="relative rounded-3xl overflow-hidden glass-card">
-                <img
-                  src={profileImage}
-                  alt="Sri Ganesh Sankuratri"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Content Side */}
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.3 }}
             className="space-y-6"
           >
-            <div>
+            <div className="glass-card p-8">
               <h3 className="font-display text-2xl font-bold mb-4">
                 Sri Ganesh Sankuratri
               </h3>
-              <p className="text-muted-foreground leading-relaxed">
+              <p className="text-muted-foreground leading-relaxed mb-4">
                 I'm a passionate Frontend Software Engineer with over 2 years of experience 
                 specializing in building scalable web applications. My expertise lies in 
                 React.js, Next.js, and modern UI frameworks like Tailwind CSS and ShadCN UI. 
                 I'm dedicated to creating user-centric, high-performance applications that 
                 deliver exceptional user experiences.
               </p>
+              <p className="text-muted-foreground leading-relaxed">
+                I thrive on component-driven development, crafting reusable UI components and 
+                design systems. My approach combines clean code practices with a keen eye for 
+                design, ensuring both functionality and aesthetics work in harmony.
+              </p>
             </div>
-
-            <p className="text-muted-foreground leading-relaxed">
-              I thrive on component-driven development, crafting reusable UI components and 
-              design systems. My approach combines clean code practices with a keen eye for 
-              design, ensuring both functionality and aesthetics work in harmony.
-            </p>
 
             {/* Education Card */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.5 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
               className="glass-card p-6"
             >
               <div className="flex items-start gap-4">
@@ -100,13 +78,13 @@ export const AboutSection = () => {
             </motion.div>
 
             {/* Highlights */}
-            <div className="grid grid-cols-3 gap-4 pt-4">
+            <div className="grid grid-cols-3 gap-4">
               {highlights.map((item, index) => (
                 <motion.div
                   key={item.label}
                   initial={{ opacity: 0, y: 20 }}
                   animate={isInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.4, delay: 0.6 + index * 0.1 }}
+                  transition={{ duration: 0.4, delay: 0.5 + index * 0.1 }}
                   className="text-center p-4 rounded-xl bg-secondary hover:bg-accent transition-colors"
                 >
                   <item.icon className="w-6 h-6 text-primary mx-auto mb-2" />
