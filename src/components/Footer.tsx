@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Linkedin, Mail, Heart } from "lucide-react";
+import { Linkedin, Mail } from "lucide-react";
 
 const socialLinks = [
   {
@@ -27,8 +27,7 @@ export const Footer = () => {
             transition={{ duration: 0.5 }}
             className="flex items-center gap-2 text-muted-foreground"
           >
-            <span>© {currentYear} Sri Ganesh Sankuratri. Made with</span>
-            <Heart className="w-4 h-4 text-primary fill-primary" />
+            <span>© {currentYear} Sri Ganesh Sankuratri. Made with React & Tailwind CSS</span>
           </motion.div>
 
           <motion.div

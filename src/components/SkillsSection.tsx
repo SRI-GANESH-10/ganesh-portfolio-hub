@@ -65,8 +65,8 @@ export const SkillsSection = () => {
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={isInView ? { opacity: 1, scale: 1 } : {}}
                     transition={{ duration: 0.3, delay: categoryIndex * 0.1 + skillIndex * 0.05 }}
-                    whileHover={{ scale: 1.05, y: -2 }}
-                    className="px-4 py-2 rounded-full text-sm font-medium bg-primary/10 text-primary border border-primary/20 hover:bg-primary-dark hover:text-primary-dark-foreground hover:border-primary-dark transition-all duration-300 cursor-default"
+                    whileHover={{ scale: 1.05, y: -2, transition: { duration: 0.15 } }}
+                    className="px-4 py-2 rounded-full text-sm font-medium bg-primary/10 text-primary border border-primary/20 hover:bg-primary-dark hover:text-primary-dark-foreground hover:border-primary-dark transition-colors duration-150 cursor-default"
                   >
                     {skill}
                   </motion.span>

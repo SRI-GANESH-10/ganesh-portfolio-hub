@@ -97,26 +97,26 @@ export const ProjectsSection = () => {
                   {project.description}
                 </p>
 
-                {/* Highlights */}
+                {/* Highlights as Hashtags */}
                 <div className="flex flex-wrap gap-2 mb-4">
                   {project.highlights.map((highlight) => (
                     <span
                       key={highlight}
-                      className="px-3 py-1 text-xs font-medium rounded-full bg-accent text-accent-foreground"
+                      className="text-xs text-muted-foreground"
                     >
-                      {highlight}
+                      #{highlight.replace(/\s+/g, '')}
                     </span>
                   ))}
                 </div>
 
-                {/* Tags */}
+                {/* Tags as Chips */}
                 <div className="flex flex-wrap gap-2 pt-4 border-t border-border">
                   {project.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="text-xs text-muted-foreground"
+                      className="px-3 py-1 text-xs font-medium rounded-full bg-primary/10 text-primary border border-primary/20"
                     >
-                      #{tag}
+                      {tag}
                     </span>
                   ))}
                 </div>
