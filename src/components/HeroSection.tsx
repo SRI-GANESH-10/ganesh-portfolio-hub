@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowDown, Download, ExternalLink } from "lucide-react";
+import { ArrowDown, ExternalLink } from "lucide-react";
 import profileImage from "@/assets/profile.jpeg";
 
 export const HeroSection = () => {
@@ -80,13 +80,15 @@ export const HeroSection = () => {
                 <ExternalLink className="w-4 h-4" />
               </motion.a>
               <motion.a
-                href="#contact"
+                href="https://drive.google.com/file/d/1N_j2XUElaJ9YCsaDu2pNCQtUL9Cf_ncp/view?usp=sharing"
+                target="_blank"
+                rel="noopener noreferrer"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-secondary text-secondary-foreground font-semibold border border-border hover:bg-accent transition-all duration-300"
               >
-                Download Resume
-                <Download className="w-4 h-4" />
+                View Resume
+                <ExternalLink className="w-4 h-4" />
               </motion.a>
             </motion.div>
           </motion.div>
@@ -111,7 +113,7 @@ export const HeroSection = () => {
                 <img
                   src={profileImage}
                   alt="Sri Ganesh Sankuratri"
-                  className="w-full h-full object-cover scale-[0.85]"
+                  className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/10 to-transparent" />
               </motion.div>
