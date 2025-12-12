@@ -1,7 +1,9 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
-import { Layers, Smartphone } from "lucide-react";
+import kanbanImage from "@/assets/kanban-project.png";
+import uxDesignImage from "@/assets/ux-design-project.png";
+import shopeeImage from "@/assets/shopee-project.png";
 
 const projects = [
   {
@@ -10,9 +12,19 @@ const projects = [
     description:
       "Interactive Kanban board with drag-and-drop functionality and real-time updates. Built during a 48-hour hackathon and adopted for internal use.",
     tags: ["React.js", "TypeScript", "Tailwind CSS", "Drag & Drop"],
-    icon: Layers,
+    image: kanbanImage,
     link: null,
     highlights: ["48-hour hackathon", "Adopted internally", "Real-time sync"],
+  },
+  {
+    title: "Shopee",
+    subtitle: "Full-Stack E-Commerce Application",
+    description:
+      "Built and deployed a full-stack e-commerce application using Next.js, Express.js, and MongoDB with responsive UI and REST API integration. Includes admin dashboard with full CRUD functionality.",
+    tags: ["Next.js", "Express.js", "MongoDB", "Tailwind CSS", "ShadCN UI"],
+    image: shopeeImage,
+    link: "https://shopee-front-mu.vercel.app/login",
+    highlights: ["Full-stack", "Admin dashboard", "Product management"],
   },
   {
     title: "UX Design Case Study",
@@ -20,7 +32,7 @@ const projects = [
     description:
       "Comprehensive UX case study featuring user research, low & high-fidelity prototypes, and accessibility-focused design principles.",
     tags: ["Figma", "User Research", "Prototyping", "Accessibility"],
-    icon: Smartphone,
+    image: uxDesignImage,
     link: "https://sites.google.com/view/uxdesignprj/home",
     highlights: ["User research", "Hi-fi prototypes", "Accessibility-first"],
   },
@@ -66,14 +78,14 @@ export const ProjectsSection = () => {
                 whileHover={{ y: -5 }}
                 className={`group glass-card overflow-hidden transition-all duration-300 hover:bg-primary/5 hover:border-primary/30 ${project.link ? 'cursor-pointer' : ''}`}
               >
-                {/* Project Header */}
-                <div className="relative h-48 bg-gradient-to-br from-primary/20 via-primary/10 to-accent/20 flex items-center justify-center transition-all duration-300 group-hover:from-primary/30 group-hover:via-primary/20 group-hover:to-accent/30">
-                  <motion.div
-                    whileHover={{ scale: 1.1, rotate: 5 }}
-                    className="p-6 rounded-2xl bg-background/50 backdrop-blur-sm transition-all duration-300 group-hover:bg-background/70"
-                  >
-                    <project.icon className="w-12 h-12 text-primary" />
-                  </motion.div>
+                {/* Project Header with Image */}
+                <div className="relative h-48 overflow-hidden transition-all duration-300">
+                  <img 
+                    src={project.image} 
+                    alt={project.title}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </div>
 
                 {/* Project Content */}
