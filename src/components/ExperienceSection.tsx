@@ -5,6 +5,16 @@ import { Briefcase, Calendar, CheckCircle2 } from "lucide-react";
 
 const experiences = [
   {
+    company: "Privasapien",
+    role: "Frontend Developer",
+    period: "Feb 2026 – Present",
+    technologies: ["React.js", "ShadCN UI"],
+    achievements: [
+      "Working as a Frontend Developer at Privasapien, an AI-driven data privacy company",
+      "Building intuitive and scalable web interfaces that make complex privacy workflows simple for users",
+    ],
+  },
+  {
     company: "Track3D.ai",
     role: "Software Engineer",
     period: "Dec 2023 – Nov 2025",
