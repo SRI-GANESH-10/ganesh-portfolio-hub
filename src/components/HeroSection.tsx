@@ -1,18 +1,18 @@
 import { motion } from "framer-motion";
-import { ArrowDown, ExternalLink } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import profileImage from "@/assets/profile.jpeg";
 
 export const HeroSection = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative h-[100dvh] flex items-center justify-center overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-accent/20" />
       <div className="floating-shape w-96 h-96 -top-48 -left-48" />
       <div className="floating-shape w-80 h-80 -bottom-40 -right-40" style={{ animationDelay: "-5s" }} />
       <div className="floating-shape w-64 h-64 top-1/2 left-1/4 opacity-10" style={{ animationDelay: "-10s" }} />
 
-      <div className="container-custom relative z-10 pt-20">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-20">
+      <div className="container-custom relative z-10 pt-16 md:pt-20">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-20">
           {/* Text Content */}
           <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -24,7 +24,7 @@ export const HeroSection = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/50 border border-primary/20 mb-6"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/50 border border-primary/20 mb-4 sm:mb-6"
             >
               <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
               <span className="text-sm font-medium text-accent-foreground">
@@ -36,7 +36,7 @@ export const HeroSection = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="font-display text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight mb-6"
+              className="font-display text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight mb-4 sm:mb-6"
             >
               Hi, I'm{" "}
               <span className="gradient-text">Sri Ganesh</span>
@@ -48,7 +48,7 @@ export const HeroSection = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className="text-lg sm:text-xl text-muted-foreground mb-4 font-medium"
+              className="text-lg sm:text-xl text-muted-foreground mb-3 sm:mb-4 font-medium"
             >
               Frontend Software Engineer | MERN Stack Developer | UI/UX Enthusiast
             </motion.p>
@@ -57,7 +57,7 @@ export const HeroSection = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
-              className="text-muted-foreground max-w-xl mx-auto lg:mx-0 mb-8 leading-relaxed"
+              className="text-muted-foreground hidden sm:block max-w-xl mx-auto lg:mx-0 mb-8 leading-relaxed"
             >
               Frontend Software Engineer with 2 years of experience building scalable web 
               applications using React.js, Next.js, and Tailwind CSS. Passionate about creating 
@@ -100,7 +100,7 @@ export const HeroSection = () => {
             transition={{ duration: 0.8, delay: 0.3 }}
             className="relative"
           >
-            <div className="relative w-72 h-72 sm:w-80 sm:h-80 lg:w-96 lg:h-96">
+            <div className="relative w-48 h-48 sm:w-64 sm:h-64 lg:w-96 lg:h-96">
               {/* Glow Effect */}
               <div className="absolute inset-0 rounded-full bg-primary/30 blur-3xl animate-pulse-soft" />
               
@@ -128,23 +128,6 @@ export const HeroSection = () => {
           </motion.div>
         </div>
 
-        {/* Scroll Indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1 }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2"
-        >
-          <motion.a
-            href="#about"
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="flex flex-col items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <span className="text-sm">Scroll Down</span>
-            <ArrowDown className="w-4 h-4" />
-          </motion.a>
-        </motion.div>
       </div>
     </section>
   );
