@@ -9,7 +9,7 @@ const socialLinks = [
   },
   {
     icon: Linkedin,
-    href: "https://www.linkedin.com/in/sri-ganesh-192292228/",
+    href: "https://www.linkedin.com/in/sri-ganesh-software-engineer",
     label: "LinkedIn",
   },
 ];

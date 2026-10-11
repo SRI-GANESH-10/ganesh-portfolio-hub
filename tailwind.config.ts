@@ -62,6 +62,16 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
+        orbit: {
+          "0%": {
+            transform:
+              "rotate(calc(var(--angle) * 1deg)) translateY(calc(var(--radius) * 1px)) rotate(calc(var(--angle) * -1deg))",
+          },
+          "100%": {
+            transform:
+              "rotate(calc(var(--angle) * 1deg + 360deg)) translateY(calc(var(--radius) * 1px)) rotate(calc((var(--angle) * -1deg) - 360deg))",
+          },
+        },
         "accordion-down": {
           from: { height: "0" },
           to: { height: "var(--radix-accordion-content-height)" },
@@ -100,6 +110,7 @@ export default {
         },
       },
       animation: {
+        orbit: "orbit calc(var(--duration) * 1s) linear infinite",
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "fade-in": "fade-in 0.6s ease-out forwards",

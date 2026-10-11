@@ -22,7 +22,7 @@ const contactInfo = [
     icon: Linkedin,
     label: "LinkedIn",
     value: "Sri Ganesh",
-    href: "https://www.linkedin.com/in/sri-ganesh-192292228/",
+    href: "https://www.linkedin.com/in/sri-ganesh-software-engineer",
   },
 ];
 

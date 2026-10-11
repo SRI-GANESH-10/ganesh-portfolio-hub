@@ -1,17 +1,34 @@
 import { motion } from "framer-motion";
-import { ExternalLink } from "lucide-react";
-import profileImage from "@/assets/profile.jpeg";
+import { FileText, Github, Linkedin, Mail } from "lucide-react";
+import profileImage from "@/assets/profile-cutout.png";
+import { OrbitingCircles } from "./ui/orbiting-circles";
+
+const links = [
+  {
+    icon: FileText,
+    label: "Resume",
+    href: "https://drive.google.com/file/d/1N_j2XUElaJ9YCsaDu2pNCQtUL9Cf_ncp/view?usp=sharing",
+  },
+  {
+    icon: Linkedin,
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/sri-ganesh-software-engineer",
+  },
+  { icon: Github, label: "GitHub", href: "https://github.com/SRI-GANESH-10" },
+  { icon: Mail, label: "Email", href: "mailto:ganeshsri38253@gmail.com" },
+];
+
+const Dot = () => (
+  <span className="h-full w-full rounded-full bg-primary/70 shadow-[0_0_10px_hsl(var(--primary)/0.6)]" />
+);
 
 export const HeroSection = () => {
   return (
     <section className="relative h-[100dvh] flex items-center justify-center overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-accent/20" />
-      <div className="floating-shape w-96 h-96 -top-48 -left-48" />
-      <div className="floating-shape w-80 h-80 -bottom-40 -right-40" style={{ animationDelay: "-5s" }} />
-      <div className="floating-shape w-64 h-64 top-1/2 left-1/4 opacity-10" style={{ animationDelay: "-10s" }} />
 
-      <div className="container-custom relative z-10 pt-16 md:pt-20">
+      <div className="container-custom relative z-10 pt-10 md:pt-12">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-20">
           {/* Text Content */}
           <motion.div
@@ -36,12 +53,10 @@ export const HeroSection = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="font-display text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight mb-4 sm:mb-6"
+              className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-4 sm:mb-6"
             >
               Hi, I'm{" "}
-              <span className="gradient-text">Sri Ganesh</span>
-              <br />
-              Sankuratri
+              <span className="gradient-text">Sri Ganesh Sankuratri</span>
             </motion.h1>
 
             <motion.p
@@ -68,28 +83,23 @@ export const HeroSection = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
+              className="flex gap-3 justify-center lg:justify-start"
             >
-              <motion.a
-                href="#projects"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-primary text-primary-foreground font-semibold shadow-lg hover:shadow-xl transition-all duration-300 glow-effect"
-              >
-                View My Work
-                <ExternalLink className="w-4 h-4" />
-              </motion.a>
-              <motion.a
-                href="https://drive.google.com/file/d/1N_j2XUElaJ9YCsaDu2pNCQtUL9Cf_ncp/view?usp=sharing"
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-secondary text-secondary-foreground font-semibold border border-border hover:bg-accent transition-all duration-300"
-              >
-                View Resume
-                <ExternalLink className="w-4 h-4" />
-              </motion.a>
+              {links.map(({ icon: Icon, label, href }) => (
+                <motion.a
+                  key={label}
+                  href={href}
+                  target={href.startsWith("mailto:") ? undefined : "_blank"}
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  title={label}
+                  whileHover={{ scale: 1.06, y: -2 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="p-3.5 rounded-xl bg-secondary border border-border text-muted-foreground hover:text-primary hover:border-primary/40 hover:bg-accent transition-colors"
+                >
+                  <Icon className="w-5 h-5" />
+                </motion.a>
+              ))}
             </motion.div>
           </motion.div>
 
@@ -100,29 +110,30 @@ export const HeroSection = () => {
             transition={{ duration: 0.8, delay: 0.3 }}
             className="relative"
           >
-            <div className="relative w-48 h-48 sm:w-64 sm:h-64 lg:w-96 lg:h-96">
-              {/* Glow Effect */}
-              <div className="absolute inset-0 rounded-full bg-primary/30 blur-3xl animate-pulse-soft" />
-              
-              {/* Image Container */}
-              <motion.div
-                animate={{ y: [0, -10, 0] }}
-                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                className="relative w-full h-full rounded-full overflow-hidden border-4 border-primary/20 shadow-2xl"
-              >
-                <img
-                  src={profileImage}
-                  alt="Sri Ganesh Sankuratri"
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-primary/10 to-transparent" />
-              </motion.div>
+            <div className="relative w-56 sm:w-72 lg:w-[26rem]">
+              {/* Orbiting dots around the portrait */}
+              <div className="pointer-events-none absolute inset-0 flex items-center justify-center scale-[0.45] sm:scale-[0.6] lg:scale-100">
+                <OrbitingCircles radius={200} duration={34} path={false} iconSize={10}>
+                  <Dot />
+                  <Dot />
+                  <Dot />
+                </OrbitingCircles>
+                <OrbitingCircles radius={145} duration={26} path={false} iconSize={8} reverse>
+                  <Dot />
+                  <Dot />
+                </OrbitingCircles>
+              </div>
 
-              {/* Decorative Elements */}
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                className="absolute -inset-4 rounded-full border-2 border-dashed border-primary/20"
+              {/* Teal glow behind the portrait */}
+              <div className="absolute inset-x-0 top-[12%] bottom-0 rounded-full bg-primary/25 blur-3xl" />
+
+              {/* Cutout portrait, edges faded into the background */}
+              <motion.img
+                src={profileImage}
+                alt="Sri Ganesh Sankuratri"
+                animate={{ y: [0, -10, 0] }}
+                transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+                className="relative w-full drop-shadow-2xl [mask-image:linear-gradient(to_bottom,black_68%,transparent_97%),linear-gradient(to_right,transparent_2%,black_18%)] [mask-composite:intersect] [-webkit-mask-composite:source-in]"
               />
             </div>
           </motion.div>
