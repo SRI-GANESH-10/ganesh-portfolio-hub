@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const navLinks = [
   { name: "About", href: "#about" },
@@ -12,7 +13,7 @@ const navLinks = [
   { name: "Contact", href: "#contact" },
 ];
 
-export const Navbar = () => {
+export const Navbar = ({ active = "" }: { active?: string }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -47,15 +48,24 @@ export const Navbar = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-1">
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-200 rounded-lg hover:bg-secondary"
-              >
-                {link.name}
-              </a>
-            ))}
+            <Tabs
+              value={active}
+              onValueChange={(value) => {
+                window.location.hash = value;
+              }}
+            >
+              <TabsList className="h-auto bg-transparent p-0 gap-1">
+                {navLinks.map((link) => (
+                  <TabsTrigger
+                    key={link.name}
+                    value={link.href.slice(1)}
+                    className="rounded-none border-b-2 border-transparent px-4 py-2 text-muted-foreground shadow-none transition-colors hover:text-foreground data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-foreground data-[state=active]:shadow-none"
+                  >
+                    {link.name}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+            </Tabs>
             <div className="ml-4">
               <ThemeToggle />
             </div>
@@ -96,7 +106,11 @@ export const Navbar = () => {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.05 }}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="block py-3 text-muted-foreground hover:text-foreground transition-colors"
+                  className={`block border-l-2 pl-3 py-3 transition-colors ${
+                    active === link.href.slice(1)
+                      ? "border-primary text-foreground font-medium"
+                      : "border-transparent text-muted-foreground hover:text-foreground"
+                  }`}
                 >
                   {link.name}
                 </motion.a>

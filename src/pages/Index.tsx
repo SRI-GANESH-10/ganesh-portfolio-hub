@@ -40,7 +40,7 @@ const Index = () => {
           : "h-[100dvh] overflow-hidden bg-background"
       }
     >
-      <Navbar />
+      <Navbar active={hash} />
       {Section ? (
         <div className="pt-16 md:pt-20">
           <Section />
