@@ -4,7 +4,7 @@ import { useRef } from "react";
 import { GraduationCap, Code2, Palette, Zap } from "lucide-react";
 
 const highlights = [
-  { icon: Code2, label: "React Expert", description: "2+ years experience" },
+  { icon: Code2, label: "React Expert", description: "2.5+ years experience" },
   { icon: Palette, label: "UI/UX Focused", description: "Design systems" },
   { icon: Zap, label: "Performance", description: "Optimization" },
 ];
@@ -44,7 +44,7 @@ export const AboutSection = () => {
                 Sri Ganesh Sankuratri
               </h3>
               <p className="text-muted-foreground leading-relaxed mb-4">
-                I'm a passionate Frontend Software Engineer with over 2 years of experience 
+                I'm a passionate Frontend Engineer with over 2.5 years of experience 
                 specializing in building scalable web applications. My expertise lies in 
                 React.js, Next.js, and modern UI frameworks like Tailwind CSS and ShadCN UI. 
                 I'm dedicated to creating user-centric, high-performance applications that 

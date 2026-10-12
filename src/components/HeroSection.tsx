@@ -1,14 +1,12 @@
 import { motion } from "framer-motion";
-import { FileText, Github, Linkedin, Mail } from "lucide-react";
+import { ArrowRight, Download, Github, Linkedin, Mail, MapPin } from "lucide-react";
 import profileImage from "@/assets/profile-cutout.png";
 import { OrbitingCircles } from "./ui/orbiting-circles";
 
+const RESUME_URL =
+  "https://drive.google.com/file/d/15PASnkdBhs-_1Lxd8NXsPg7EjeN0XHFK/view";
+
 const links = [
-  {
-    icon: FileText,
-    label: "Resume",
-    href: "https://drive.google.com/file/d/1N_j2XUElaJ9YCsaDu2pNCQtUL9Cf_ncp/view?usp=sharing",
-  },
   {
     icon: Linkedin,
     label: "LinkedIn",
@@ -24,36 +22,24 @@ const Dot = () => (
 
 export const HeroSection = () => {
   return (
-    <section className="relative h-[100dvh] flex items-center justify-center overflow-hidden">
+    <section className="relative h-[100dvh] flex items-center justify-center overflow-x-hidden overflow-y-auto">
       {/* Background Elements */}
       <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-accent/20" />
 
       <div className="container-custom relative z-10 pt-10 md:pt-12">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-20">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12">
           {/* Text Content */}
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="flex-1 text-center lg:text-left"
+            className="flex-1 lg:min-w-[34rem] text-center lg:text-left"
           >
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/50 border border-primary/20 mb-4 sm:mb-6"
-            >
-              <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-              <span className="text-sm font-medium text-accent-foreground">
-                Available for opportunities
-              </span>
-            </motion.div>
-
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-4 sm:mb-6"
+              className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-3 sm:mb-4"
             >
               Hi, I'm{" "}
               <span className="gradient-text">Sri Ganesh Sankuratri</span>
@@ -63,28 +49,62 @@ export const HeroSection = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className="text-lg sm:text-xl text-muted-foreground mb-3 sm:mb-4 font-medium"
+              className="text-lg sm:text-xl text-muted-foreground mb-3 font-medium xl:whitespace-nowrap"
             >
-              Frontend Software Engineer | MERN Stack Developer | UI/UX Enthusiast
+              Frontend Engineer · Micro-Frontends &amp; Design Systems · MERN Stack
             </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.45 }}
+              className="mb-4"
+            >
+              <span className="inline-flex items-center px-3 py-1 rounded-full border border-primary/30 bg-primary/5 text-xs font-medium text-primary">
+                Google UX Certified · Figma → Code
+              </span>
+            </motion.div>
 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
-              className="text-muted-foreground hidden sm:block max-w-xl mx-auto lg:mx-0 mb-8 leading-relaxed"
+              className="text-muted-foreground hidden sm:block max-w-xl mx-auto lg:mx-0 mb-6 leading-relaxed"
             >
-              Frontend Software Engineer with 2 years of experience building scalable web 
-              applications using React.js, Next.js, and Tailwind CSS. Passionate about creating 
-              scalable, user-centric, high-performance applications.
+              2.5+ years building production React + TypeScript apps. Currently building a
+              micro-frontend privacy governance platform at PrivaSapien, with Track3D.ai
+              before that.
             </motion.p>
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}
-              className="flex gap-3 justify-center lg:justify-start"
+              className="flex flex-wrap items-center gap-3 justify-center lg:justify-start"
             >
+              <motion.a
+                href="#projects"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-primary text-primary-foreground font-semibold shadow-lg hover:shadow-xl transition-all duration-300 glow-effect"
+              >
+                View Projects
+                <ArrowRight className="w-4 h-4" />
+              </motion.a>
+              <motion.a
+                href={RESUME_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-secondary text-secondary-foreground font-semibold border border-border hover:bg-accent transition-all duration-300"
+              >
+                Download Resume
+                <Download className="w-4 h-4" />
+              </motion.a>
+
+              <span className="hidden sm:block w-px h-8 bg-border mx-1" />
+
               {links.map(({ icon: Icon, label, href }) => (
                 <motion.a
                   key={label}
@@ -93,13 +113,23 @@ export const HeroSection = () => {
                   rel="noopener noreferrer"
                   aria-label={label}
                   title={label}
-                  whileHover={{ scale: 1.06, y: -2 }}
+                  whileHover={{ scale: 1.08, y: -2 }}
                   whileTap={{ scale: 0.95 }}
-                  className="p-3.5 rounded-xl bg-secondary border border-border text-muted-foreground hover:text-primary hover:border-primary/40 hover:bg-accent transition-colors"
+                  className="p-2.5 rounded-xl bg-secondary border border-border text-muted-foreground hover:text-primary hover:border-primary/40 transition-colors"
                 >
                   <Icon className="w-5 h-5" />
                 </motion.a>
               ))}
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.8 }}
+              className="flex items-center gap-1.5 mt-5 text-sm text-muted-foreground justify-center lg:justify-start"
+            >
+              <MapPin className="w-3.5 h-3.5" />
+              Bengaluru, India
             </motion.div>
           </motion.div>
 
@@ -110,7 +140,7 @@ export const HeroSection = () => {
             transition={{ duration: 0.8, delay: 0.3 }}
             className="relative"
           >
-            <div className="relative w-56 sm:w-72 lg:w-[26rem]">
+            <div className="relative w-56 sm:w-72 lg:w-[22rem] xl:w-[26rem]">
               {/* Orbiting dots around the portrait */}
               <div className="pointer-events-none absolute inset-0 flex items-center justify-center scale-[0.45] sm:scale-[0.6] lg:scale-100">
                 <OrbitingCircles radius={200} duration={34} path={false} iconSize={10}>

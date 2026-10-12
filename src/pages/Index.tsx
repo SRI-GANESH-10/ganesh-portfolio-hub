@@ -7,7 +7,6 @@ import { ExperienceSection } from "@/components/ExperienceSection";
 import { ServicesSection } from "@/components/ServicesSection";
 import { ProjectsSection } from "@/components/ProjectsSection";
 import { ContactSection } from "@/components/ContactSection";
-import { Footer } from "@/components/Footer";
 
 const sections: Record<string, () => JSX.Element> = {
   about: AboutSection,
@@ -45,7 +44,6 @@ const Index = () => {
       {Section ? (
         <div className="pt-16 md:pt-20">
           <Section />
-          <Footer />
         </div>
       ) : (
         <HeroSection />
