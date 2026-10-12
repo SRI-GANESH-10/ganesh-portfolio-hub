@@ -59,9 +59,16 @@ export const Navbar = ({ active = "" }: { active?: string }) => {
                   <TabsTrigger
                     key={link.name}
                     value={link.href.slice(1)}
-                    className="rounded-none border-b-2 border-transparent px-4 py-2 text-muted-foreground shadow-none transition-colors hover:text-foreground data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-foreground data-[state=active]:shadow-none"
+                    className="relative rounded-none px-4 py-2 text-muted-foreground shadow-none transition-colors duration-200 hover:text-foreground active:scale-95 data-[state=active]:bg-transparent data-[state=active]:text-foreground data-[state=active]:shadow-none"
                   >
                     {link.name}
+                    {active === link.href.slice(1) && (
+                      <motion.span
+                        layoutId="activeTab"
+                        className="absolute inset-x-2 -bottom-0.5 h-0.5 rounded-full bg-primary"
+                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                      />
+                    )}
                   </TabsTrigger>
                 ))}
               </TabsList>

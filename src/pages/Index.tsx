@@ -8,7 +8,6 @@ import { ServicesSection } from "@/components/ServicesSection";
 import { ProjectsSection } from "@/components/ProjectsSection";
 import { ContactSection } from "@/components/ContactSection";
 import { Footer } from "@/components/Footer";
-import { BlurFade } from "@/components/ui/blur-fade";
 
 const sections: Record<string, () => JSX.Element> = {
   about: AboutSection,
@@ -33,6 +32,7 @@ const Index = () => {
 
   const Section = sections[hash];
 
+
   return (
     <main
       className={
@@ -42,16 +42,14 @@ const Index = () => {
       }
     >
       <Navbar active={hash} />
-      <BlurFade key={hash}>
-        {Section ? (
-          <div className="pt-16 md:pt-20">
-            <Section />
-            <Footer />
-          </div>
-        ) : (
-          <HeroSection />
-        )}
-      </BlurFade>
+      {Section ? (
+        <div className="pt-16 md:pt-20">
+          <Section />
+          <Footer />
+        </div>
+      ) : (
+        <HeroSection />
+      )}
     </main>
   );
 };
