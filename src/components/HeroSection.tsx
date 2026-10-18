@@ -2,18 +2,12 @@ import { motion } from "framer-motion";
 import { ArrowRight, Download, Github, Linkedin, Mail, MapPin } from "lucide-react";
 import profileImage from "@/assets/profile-cutout.png";
 import { OrbitingCircles } from "./ui/orbiting-circles";
-
-const RESUME_URL =
-  "https://drive.google.com/file/d/15PASnkdBhs-_1Lxd8NXsPg7EjeN0XHFK/view";
+import { href } from "@/data/profile";
 
 const links = [
-  {
-    icon: Linkedin,
-    label: "LinkedIn",
-    href: "https://www.linkedin.com/in/sri-ganesh-software-engineer",
-  },
-  { icon: Github, label: "GitHub", href: "https://github.com/SRI-GANESH-10" },
-  { icon: Mail, label: "Email", href: "mailto:ganeshsri38253@gmail.com" },
+  { icon: Linkedin, label: "LinkedIn", href: href.linkedin },
+  { icon: Github, label: "GitHub", href: href.github },
+  { icon: Mail, label: "Email", href: href.email },
 ];
 
 const Dot = () => (
@@ -92,7 +86,7 @@ export const HeroSection = () => {
                 <ArrowRight className="w-4 h-4" />
               </motion.a>
               <motion.a
-                href={RESUME_URL}
+                href={href.resume}
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.02 }}

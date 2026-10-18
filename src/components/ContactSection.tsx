@@ -4,25 +4,26 @@ import { useRef, useState } from "react";
 import { Mail, Phone, Linkedin, Send } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import emailjs from "@emailjs/browser";
+import { profile, href } from "@/data/profile";
 
 const contactInfo = [
   {
     icon: Mail,
     label: "Email",
-    value: "ganeshsri38253@gmail.com",
-    href: "mailto:ganeshsri38253@gmail.com",
+    value: profile.email,
+    href: href.email,
   },
   {
     icon: Phone,
     label: "Phone",
-    value: "+91 7995684899",
-    href: "tel:+917995684899",
+    value: profile.phoneDisplay,
+    href: href.phone,
   },
   {
     icon: Linkedin,
     label: "LinkedIn",
-    value: "Sri Ganesh",
-    href: "https://www.linkedin.com/in/sri-ganesh-software-engineer",
+    value: profile.linkedinDisplay,
+    href: href.linkedin,
   },
 ];
 

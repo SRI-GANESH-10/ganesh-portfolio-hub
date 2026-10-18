@@ -4,7 +4,7 @@ import { ProjectCard } from "./ProjectCard";
 import { Pill } from "./Pill";
 import { projects } from "@/data/projects";
 import { stack } from "@/data/stack";
-import { profile } from "@/data/profile";
+import { href } from "@/data/profile";
 import type { Rich } from "@/data/questions";
 
 const btn = "rounded-xl text-[13.5px] font-semibold";
@@ -46,7 +46,7 @@ export const RichPayload = ({ payload }: { payload?: Rich }) => {
     case "resume":
       return (
         <Button asChild size="sm" className={btn}>
-          <a href={profile.resumeUrl} download>
+          <a href={href.resume} target="_blank" rel="noopener noreferrer">
             Download Resume <Download />
           </a>
         </Button>
@@ -56,17 +56,17 @@ export const RichPayload = ({ payload }: { payload?: Rich }) => {
       return (
         <div className="flex flex-wrap gap-2.5">
           <Button asChild size="sm" className={btn}>
-            <a href={`mailto:${profile.email}`}>
+            <a href={href.email}>
               <Mail /> Email me
             </a>
           </Button>
           <Button asChild size="sm" variant="secondary" className={`${btn} border border-border`}>
-            <a href={profile.linkedin} target="_blank" rel="noopener noreferrer">
+            <a href={href.linkedin} target="_blank" rel="noopener noreferrer">
               <Linkedin /> LinkedIn
             </a>
           </Button>
           <Button asChild size="sm" variant="secondary" className={`${btn} border border-border`}>
-            <a href={profile.github} target="_blank" rel="noopener noreferrer">
+            <a href={href.github} target="_blank" rel="noopener noreferrer">
               <Github /> GitHub
             </a>
           </Button>
