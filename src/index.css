@@ -166,3 +166,19 @@
     opacity: 0.8;
   }
 }
+
+/* React Flow ships light-only colours; point its variables at our theme tokens so .dark flips them too */
+.react-flow {
+  --xy-controls-button-background-color: hsl(var(--card));
+  --xy-controls-button-background-color-hover: hsl(var(--muted));
+  --xy-controls-button-color: hsl(var(--foreground));
+  --xy-controls-button-color-hover: hsl(var(--foreground));
+  --xy-controls-button-border-color: hsl(var(--border));
+  --xy-background-pattern-color: hsl(var(--muted-foreground) / 0.35);
+  --xy-edge-stroke: hsl(var(--muted-foreground) / 0.6);
+  --xy-attribution-background-color: hsl(var(--card) / 0.6);
+}
+
+.react-flow__attribution a {
+  color: hsl(var(--muted-foreground));
+}

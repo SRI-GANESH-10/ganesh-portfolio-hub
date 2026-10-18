@@ -7,10 +7,11 @@ import { ExperienceSection } from "@/components/ExperienceSection";
 import { ServicesSection } from "@/components/ServicesSection";
 import { ProjectsSection } from "@/components/ProjectsSection";
 import { ContactSection } from "@/components/ContactSection";
+import { SkillsGraph } from "@/components/SkillsGraph";
 
 const sections: Record<string, () => JSX.Element> = {
   about: AboutSection,
-  skills: SkillsSection,
+  skills: SkillsGraph,
   experience: ExperienceSection,
   services: ServicesSection,
   projects: ProjectsSection,

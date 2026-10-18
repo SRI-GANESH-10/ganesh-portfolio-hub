@@ -32,7 +32,7 @@ export const ChatPanel = () => {
   };
 
   return (
-    <div className="w-full max-w-[880px] mx-auto flex-1 min-h-0 flex flex-col">
+    <div className="w-full flex-1 min-h-0 flex flex-col">
       {/* only this scrolls */}
       <div ref={scroller} className="flex-1 min-h-0 overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
       {history.map((id, i) => {
