@@ -1,128 +1,238 @@
-import { motion } from "framer-motion";
-import { useInView } from "framer-motion";
-import { useRef } from "react";
-import { Briefcase, Calendar, CheckCircle2 } from "lucide-react";
+import { MotionConfig, motion } from "framer-motion";
+import { cn } from "@/lib/utils";
+import { roles, type Highlight, type Role } from "@/data/experience";
+import { RoleCard } from "./RoleCard";
+import { HighlightCard } from "./HighlightCard";
+import { Sticker } from "./Sticker";
+import { TimelinePath } from "./TimelinePath";
+import { OverviewBoard } from "./OverviewBoard";
+import { Button } from "@/components/ui/button";
 
-const experiences = [
-  {
-    company: "Privasapien",
-    role: "Frontend Developer",
-    period: "Feb 2026 – Present",
-    technologies: ["React.js", "ShadCN UI"],
-    achievements: [
-      "Working as a Frontend Developer at Privasapien, an AI-driven data privacy company",
-      "Building intuitive and scalable web interfaces that make complex privacy workflows simple for users",
-    ],
-  },
-  {
-    company: "Track3D.ai",
-    role: "Software Engineer",
-    period: "Dec 2023 – Nov 2025",
-    technologies: ["React.js", "Next.js", "Tailwind CSS", "ShadCN UI"],
-    achievements: [
-      "Built reusable UI components reducing development time by 30%",
-      "Designed Notes & Progress features improving tracking efficiency by 35%",
-      "Integrated Procore API for bidirectional project synchronization",
-      "Built Project Configuration & Tagging System for enhanced organization",
-      "Improved page load performance by 20% through optimization techniques",
-      "Conducted code reviews and mentored junior developers",
-      "Implemented Figma-based UIs and maintained Storybook documentation",
-    ],
-  },
+// A fixed tilt pattern so the cards look hand-placed but stay the same on every visit.
+const TILTS = [-2.2, 1.6, -1.2, 2.4, -1.8, 1.1, -2.6, 1.9];
+
+type Row =
+  | { key: string; kind: "role"; role: Role }
+  | {
+      key: string;
+      kind: "point";
+      highlight: Highlight;
+      side: "L" | "R";
+      tilt: number;
+    }
+  | { key: string; kind: "end" };
+
+// Flatten roles into one list of rows. Left/right alternates across the whole list,
+// so the zig-zag carries on smoothly from one company into the next.
+const rows: Row[] = [];
+let n = 0;
+for (const role of roles) {
+  rows.push({ key: role.id, kind: "role", role });
+  role.highlights.forEach((highlight, k) => {
+    rows.push({
+      key: `${role.id}-${k}`,
+      kind: "point",
+      highlight,
+      side: n % 2 ? "R" : "L",
+      tilt: TILTS[n % TILTS.length],
+    });
+    n++;
+  });
+}
+rows.push({ key: "end", kind: "end" });
+
+// e.g. "Oct 2026": worked out from today, so the end card never goes stale
+const today = new Date().toLocaleDateString("en", {
+  month: "short",
+  year: "numeric",
+});
+
+const toOverview = () =>
+  document.getElementById("overview")?.scrollIntoView({ behavior: "smooth" });
+
+const dot =
+  "block rounded-full border-muted-foreground/40 bg-background relative z-10 transition-colors duration-300";
+const dotReached = "border-primary bg-primary";
+const bigDot = "h-[22px] w-[22px] border-[3px]";
+const bigDotReached = [
+  dotReached,
+  "shadow-[0_0_0_6px_hsl(var(--primary)/0.12)]",
 ];
 
-export const ExperienceSection = () => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+// Phones: every row is "dot | content" with the line down the left (40px column).
+// From md up: highlight rows zig-zag around a centre column, headers stack dot-over-card.
+const phoneRow = "grid grid-cols-[40px_1fr]";
+const phoneDot = "col-start-1 row-start-1 justify-self-center";
+const phoneContent = "col-start-2 row-start-1 w-full";
 
-  return (
-    <section id="experience" className="section-padding relative overflow-hidden">
-      {/* Background Effects */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary-dark/5" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-primary/5 blur-3xl" />
-      <div className="floating-shape w-80 h-80 top-20 -right-40 opacity-10" />
-      <div className="floating-shape w-64 h-64 bottom-20 -left-32 opacity-10" />
-      
-      <div className="container-custom relative" ref={ref}>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+// Cards "slap" on like stickers when the glow reaches their dot: they start a bit big,
+// over-rotated and invisible, then settle with a small overshoot. Scrolling back up peels them off.
+const HIDDEN = { opacity: 0, scale: 1.12, rotate: 7, y: 8 };
+const SHOWN = { opacity: 1, scale: 1, rotate: 0, y: 0 };
+const SLAP = {
+  duration: 0.45,
+  ease: [0.3, 1.6, 0.5, 1] as const,
+  opacity: { duration: 0.35 },
+};
+
+const Slap = ({
+  reached,
+  children,
+}: {
+  reached: boolean;
+  children: React.ReactNode;
+}) => (
+  <motion.div
+    initial={HIDDEN}
+    animate={reached ? SHOWN : HIDDEN}
+    transition={SLAP}
+  >
+    {children}
+  </motion.div>
+);
+
+export const ExperienceSection = () => (
+  // reducedMotion="user": skip the slap animations for people who've asked their OS for less motion
+  <MotionConfig reducedMotion="user">
+    {/* overflow-x-clip: cards waiting to slap in are scaled up and would poke past a phone's edge */}
+    <section
+      id="experience"
+      className="container-custom overflow-x-clip pt-6 pb-24"
+    >
+      <div className="mb-4 flex justify-center">
+        <button
+          onClick={toOverview}
+          className="text-xs text-muted-foreground transition-colors hover:text-primary"
         >
-          <span className="text-primary font-medium text-sm uppercase tracking-wider">
-            Career
-          </span>
-          <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold mt-3">
-            Work Experience
-          </h2>
-        </motion.div>
+          Skip to the overview ↓
+        </button>
+      </div>
+      <TimelinePath startAt={2} className="max-w-[1000px]">
+        {(active) =>
+          rows.map((r, i) => {
+            // one dot per row, so row i's dot is reached when i < active
+            const reached = i < active;
 
-        <div className="relative max-w-4xl mx-auto">
-          {/* Timeline Line - Left aligned */}
-          <div className="absolute left-0 md:left-8 top-0 bottom-0 w-px bg-gradient-to-b from-primary via-primary/50 to-transparent" />
-
-          {experiences.map((exp, index) => (
-            <motion.div
-              key={exp.company}
-              initial={{ opacity: 0, y: 40 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: index * 0.2 }}
-              className="relative pl-12 md:pl-20"
-            >
-              {/* Timeline Dot */}
-              <div className="absolute left-0 md:left-8 top-8 w-4 h-4 rounded-full bg-primary border-4 border-background -translate-x-1/2 glow-effect z-10" />
-
-              <div className="glass-card p-8 lg:p-10 bg-gradient-to-br from-background/80 to-background/40 border-primary/10">
-                {/* Header */}
-                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
-                  <div className="flex items-center gap-4">
-                    <div className="p-3 rounded-xl bg-primary/10">
-                      <Briefcase className="w-6 h-6 text-primary" />
-                    </div>
-                    <div>
-                      <h3 className="font-display font-bold text-2xl">{exp.company}</h3>
-                      <p className="text-muted-foreground text-lg">{exp.role}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground bg-secondary/50 px-4 py-2 rounded-full">
-                    <Calendar className="w-4 h-4" />
-                    {exp.period}
+            if (r.kind === "role")
+              return (
+                <div
+                  key={r.key}
+                  // data-reached lets the stickers inside pop in too (see Sticker)
+                  data-reached={reached}
+                  className={cn(
+                    "group/reach relative mt-8 mb-14 items-start",
+                    phoneRow,
+                    "md:mt-10 md:mb-24 md:flex md:flex-col md:items-center",
+                  )}
+                >
+                  <i
+                    data-dot
+                    className={cn(
+                      dot,
+                      bigDot,
+                      phoneDot,
+                      // phones: level with the card's top; md: sits on the card's top edge
+                      "mt-7 md:mt-0 md:-mb-[11px]",
+                      reached && bigDotReached,
+                    )}
+                  />
+                  <div className={cn(phoneContent, "md:max-w-[640px]")}>
+                    <Slap reached={reached}>
+                      <RoleCard role={r.role} />
+                    </Slap>
                   </div>
                 </div>
+              );
 
-                {/* Technologies */}
-                <div className="flex flex-wrap gap-2 mb-8">
-                  {exp.technologies.map((tech) => (
-                    <span
-                      key={tech}
-                      className="px-4 py-1.5 text-sm font-medium rounded-full bg-primary/10 text-primary border border-primary/20"
-                    >
-                      {tech}
-                    </span>
-                  ))}
+            if (r.kind === "point")
+              return (
+                <div
+                  key={r.key}
+                  data-reached={reached}
+                  className={cn(
+                    "group/reach relative mb-12 items-center",
+                    phoneRow,
+                    // md: 3 columns, left card | centre dot | right card
+                    "md:mb-20 md:grid-cols-[1fr_70px_1fr]",
+                  )}
+                >
+                  <i
+                    data-dot
+                    className={cn(
+                      dot,
+                      "h-3.5 w-3.5 border-2",
+                      phoneDot,
+                      "md:col-start-2",
+                      reached && dotReached,
+                    )}
+                  />
+                  <div
+                    className={cn(
+                      phoneContent,
+                      "md:max-w-[400px]",
+                      r.side === "L"
+                        ? "md:col-start-1 md:justify-self-end"
+                        : "md:col-start-3 md:justify-self-start",
+                    )}
+                  >
+                    <Slap reached={reached}>
+                      <HighlightCard
+                        highlight={r.highlight}
+                        side={r.side}
+                        tilt={r.tilt}
+                      />
+                    </Slap>
+                  </div>
                 </div>
+              );
 
-                {/* Achievements */}
-                <div className="grid sm:grid-cols-2 gap-4">
-                  {exp.achievements.map((achievement, i) => (
-                    <motion.div
-                      key={i}
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={isInView ? { opacity: 1, x: 0 } : {}}
-                      transition={{ duration: 0.3, delay: 0.4 + i * 0.05 }}
-                      className="flex items-start gap-3 p-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors"
+            // the last stop: where things stand today
+            return (
+              <div
+                key={r.key}
+                data-reached={reached}
+                className={cn(
+                  "group/reach relative items-center",
+                  phoneRow,
+                  "md:flex md:flex-col md:gap-5",
+                )}
+              >
+                <i
+                  data-dot
+                  className={cn(
+                    dot,
+                    bigDot,
+                    phoneDot,
+                    reached && bigDotReached,
+                  )}
+                />
+                <div className={cn(phoneContent, "md:text-center")}>
+                  <Slap reached={reached}>
+                    <Sticker big tilt={-3} className="static inline-flex">
+                      ● Now · {today}
+                    </Sticker>
+                    <p className="mt-3 text-sm text-muted-foreground">
+                      Still shipping. Next stop: your team?
+                    </p>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={toOverview}
+                      className="mt-4 rounded-full border-primary text-primary hover:bg-primary/10 hover:text-primary"
                     >
-                      <CheckCircle2 className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                      <p className="text-sm text-muted-foreground">{achievement}</p>
-                    </motion.div>
-                  ))}
+                      See it all at once ↓
+                    </Button>
+                  </Slap>
                 </div>
               </div>
-            </motion.div>
-          ))}
-        </div>
+            );
+          })
+        }
+      </TimelinePath>
+      {/* also the room the last dot needs to scroll up to the mid-screen reading line */}
+      <div className="mt-[30vh]">
+        <OverviewBoard />
       </div>
     </section>
-  );
-};
+  </MotionConfig>
+);
