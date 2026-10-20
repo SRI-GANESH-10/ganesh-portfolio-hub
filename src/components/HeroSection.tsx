@@ -1,8 +1,15 @@
 import { motion } from "framer-motion";
-import { ArrowRight, Download, Github, Linkedin, Mail, MapPin } from "lucide-react";
+import {
+  ArrowRight,
+  Download,
+  Github,
+  Linkedin,
+  Mail,
+  MapPin,
+} from "lucide-react";
 import profileImage from "@/assets/profile-cutout.png";
 import { OrbitingCircles } from "./ui/orbiting-circles";
-import { href } from "@/data/profile";
+import { href, profile } from "@/data/profile";
 
 const links = [
   { icon: Linkedin, label: "LinkedIn", href: href.linkedin },
@@ -45,7 +52,8 @@ export const HeroSection = () => {
               transition={{ delay: 0.4 }}
               className="text-lg sm:text-xl text-muted-foreground mb-3 font-medium xl:whitespace-nowrap"
             >
-              Frontend Engineer · Micro-Frontends &amp; Design Systems · MERN Stack
+              Frontend Engineer · Micro-Frontends &amp; Design Systems · MERN
+              Stack
             </motion.p>
 
             <motion.div
@@ -65,9 +73,9 @@ export const HeroSection = () => {
               transition={{ delay: 0.5 }}
               className="text-muted-foreground hidden sm:block max-w-xl mx-auto lg:mx-0 mb-6 leading-relaxed"
             >
-              2.5+ years building production React + TypeScript apps. Currently building a
-              micro-frontend privacy governance platform at PrivaSapien, with Track3D.ai
-              before that.
+              {profile.experience} building production React + TypeScript apps.
+              Currently building a micro-frontend privacy governance platform at
+              PrivaSapien, with Track3D.ai before that.
             </motion.p>
 
             <motion.div
@@ -123,7 +131,7 @@ export const HeroSection = () => {
               className="flex items-center gap-1.5 mt-5 text-sm text-muted-foreground justify-center lg:justify-start"
             >
               <MapPin className="w-3.5 h-3.5" />
-              Bengaluru, India
+              {profile.location}
             </motion.div>
           </motion.div>
 
@@ -137,12 +145,23 @@ export const HeroSection = () => {
             <div className="relative w-56 sm:w-72 lg:w-[22rem] xl:w-[26rem]">
               {/* Orbiting dots around the portrait */}
               <div className="pointer-events-none absolute inset-0 flex items-center justify-center scale-[0.45] sm:scale-[0.6] lg:scale-100">
-                <OrbitingCircles radius={200} duration={34} path={false} iconSize={10}>
+                <OrbitingCircles
+                  radius={200}
+                  duration={34}
+                  path={false}
+                  iconSize={10}
+                >
                   <Dot />
                   <Dot />
                   <Dot />
                 </OrbitingCircles>
-                <OrbitingCircles radius={145} duration={26} path={false} iconSize={8} reverse>
+                <OrbitingCircles
+                  radius={145}
+                  duration={26}
+                  path={false}
+                  iconSize={8}
+                  reverse
+                >
                   <Dot />
                   <Dot />
                 </OrbitingCircles>
@@ -156,13 +175,16 @@ export const HeroSection = () => {
                 src={profileImage}
                 alt="Sri Ganesh Sankuratri"
                 animate={{ y: [0, -10, 0] }}
-                transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+                transition={{
+                  duration: 7,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
                 className="relative w-full drop-shadow-2xl [mask-image:linear-gradient(to_bottom,black_68%,transparent_97%),linear-gradient(to_right,transparent_2%,black_18%)] [mask-composite:intersect] [-webkit-mask-composite:source-in]"
               />
             </div>
           </motion.div>
         </div>
-
       </div>
     </section>
   );

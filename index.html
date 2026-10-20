@@ -1,7 +1,13 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
+    <!-- Dark by default, set before anything paints. Only a visitor who picked light gets light. -->
+    <script>
+      try {
+        if (localStorage.getItem("theme") === "light") document.documentElement.classList.remove("dark");
+      } catch {}
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="/favicon.jpeg" type="image/jpeg" />
     <title>Sri Ganesh Sankuratri | Frontend Software Engineer</title>

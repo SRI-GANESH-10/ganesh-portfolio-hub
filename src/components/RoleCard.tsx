@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import type { Role } from "@/data/experience";
+import { isCurrent, period, type Role } from "@/data/experience";
 import { Sticker } from "./Sticker";
 import { StackChips } from "./StackChips";
 
@@ -11,14 +11,14 @@ export const RoleCard = ({ role }: { role: Role }) => (
   <div
     className={cn(
       "relative rounded-[22px] border bg-card px-6 pt-10 pb-7 text-left md:px-8 md:text-center",
-      role.current ? "border-primary/45" : "border-border",
+      isCurrent(role) ? "border-primary/45" : "border-border",
     )}
-    style={{ transform: `rotate(${role.current ? 1 : -1}deg)` }}
+    style={{ transform: `rotate(${isCurrent(role) ? 1 : -1}deg)` }}
   >
     <Sticker tone="white" big tilt={-6} className="-top-4 left-6">
-      {role.period}
+      {period(role)}
     </Sticker>
-    {role.current ? (
+    {isCurrent(role) ? (
       <Sticker big tilt={6} className={rightSticker}>
         ● NOW
       </Sticker>

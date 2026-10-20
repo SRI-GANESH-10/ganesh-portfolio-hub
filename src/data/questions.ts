@@ -1,3 +1,5 @@
+import { profile } from "./profile";
+
 export type Rich =
   | { kind: "projects"; ids: string[] }
   | { kind: "stack" }
@@ -60,7 +62,7 @@ export const QUESTIONS: Question[] = [
   {
     id: "about",
     label: "Who are you?",
-    say: "I'm Sri Ganesh Sankuratri, a frontend engineer with 2.5+ years building production React and TypeScript apps. I'm currently at PrivaSapien on a micro-frontend privacy governance platform, and before that I was at Track3D.ai.",
+    say: `I'm ${profile.name}, a frontend engineer with ${profile.experience} building production React and TypeScript apps. I'm currently at PrivaSapien on a micro-frontend privacy governance platform, and before that I was at Track3D.ai.`,
   },
   {
     id: "resume",

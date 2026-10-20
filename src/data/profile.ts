@@ -1,6 +1,9 @@
+import { monthsWorked } from "./experience";
 /** Single source of truth for every external link and contact detail. */
 export const profile = {
   name: "Sri Ganesh Sankuratri",
+  location: "Bengaluru, India",
+  experience: `${Math.floor(monthsWorked / 6) / 2}+ years`,
   email: "ganeshsri38253@gmail.com",
   phone: "+91 7995684899",
   phoneDisplay: "+91 7995684899",

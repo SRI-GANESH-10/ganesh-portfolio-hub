@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { roles, type Role } from "@/data/experience";
+import { isCurrent, period, roles, type Role } from "@/data/experience";
 import { Sticker } from "./Sticker";
 import { StackChips } from "./StackChips";
 
@@ -38,13 +38,13 @@ const BoardCard = ({ role, tilt }: { role: Role; tilt: number }) => {
       transition={{ duration: 0.6, ease: [0.3, 1.4, 0.5, 1] }}
       className={cn(
         "group/reach relative rounded-[22px] border bg-card px-6 pt-12 pb-7 md:px-8",
-        role.current ? "border-primary/45" : "border-border",
+        isCurrent(role) ? "border-primary/45" : "border-border",
       )}
     >
       <Sticker tone="white" big tilt={-6} className="-top-4 left-6">
-        {role.period}
+        {period(role)}
       </Sticker>
-      {role.current ? (
+      {isCurrent(role) ? (
         <Sticker big tilt={5} className="-top-[18px] right-8">
           ● NOW
         </Sticker>
