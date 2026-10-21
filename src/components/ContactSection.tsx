@@ -1,230 +1,73 @@
-import { motion } from "framer-motion";
-import { useInView } from "framer-motion";
-import { useRef, useState } from "react";
-import { Mail, Phone, Linkedin, Send } from "lucide-react";
+import { ArrowUpRight, Copy, Github, Linkedin, Phone } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
-import emailjs from "@emailjs/browser";
-import { profile, href } from "@/data/profile";
+import { contact } from "@/data/contact";
+import { href, profile } from "@/data/profile";
+import { Greeting } from "./Greeting";
 
-const contactInfo = [
+// Clipboard access can be refused (old browsers, some privacy settings): then show the
+// address in the toast so it can still be copied by hand.
+const copyEmail = async () => {
+  try {
+    await navigator.clipboard.writeText(profile.email);
+    toast({ title: "Email copied", description: profile.email });
+  } catch {
+    toast({ title: "Couldn't copy automatically", description: profile.email });
+  }
+};
+
+// Every link comes from profile.ts, the single source for contact details.
+const links = [
+  { label: "LinkedIn", href: href.linkedin, icon: Linkedin, external: true },
+  { label: "GitHub", href: href.github, icon: Github, external: true },
+  { label: "Résumé", href: href.resume, icon: ArrowUpRight, external: true },
   {
-    icon: Mail,
-    label: "Email",
-    value: profile.email,
-    href: href.email,
-  },
-  {
-    icon: Phone,
-    label: "Phone",
-    value: profile.phoneDisplay,
+    label: profile.phoneDisplay,
     href: href.phone,
-  },
-  {
-    icon: Linkedin,
-    label: "LinkedIn",
-    value: profile.linkedinDisplay,
-    href: href.linkedin,
+    icon: Phone,
+    external: false,
   },
 ];
 
-const EMAILJS_SERVICE_ID = "service_tvre7a9";
-const EMAILJS_TEMPLATE_ID = "template_pjfzt6h";
-const EMAILJS_PUBLIC_KEY = "3vbOFKtijdhUrtrS4";
+const btn = "h-11 rounded-xl px-5 text-[14.5px] font-semibold";
 
-export const ContactSection = () => {
-  const ref = useRef(null);
-  const formRef = useRef<HTMLFormElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
+export const ContactSection = () => (
+  // one screen tall (minus the fixed navbar) with the content centred in it; min-h, not h,
+  // so very short screens can still scroll instead of cutting the buttons off
+  // pb > pt: exact centre looks low to the eye, so sit a little above it (optical centre)
+  <section
+    id="contact"
+    className="container-custom flex min-h-[calc(100dvh-4rem)] flex-col justify-center pt-4 pb-[10vh] text-center md:min-h-[calc(100dvh-5rem)]"
+  >
+    <h2 className="font-display text-[clamp(32px,5vw,48px)] font-bold tracking-[-0.025em]">
+      {contact.heading}
+    </h2>
+    <div className="mt-6">
+      <Greeting />
+    </div>
+    <p className="mx-auto mt-7 max-w-[580px] leading-relaxed text-foreground/80">
+      {contact.lead}
+    </p>
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
-      toast({
-        title: "Please fill all fields",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setIsSubmitting(true);
-    
-    try {
-      await emailjs.send(
-        EMAILJS_SERVICE_ID,
-        EMAILJS_TEMPLATE_ID,
-        {
-          from_name: formData.name,
-          from_email: formData.email,
-          message: formData.message,
-          to_name: "Sri Ganesh",
-        },
-        EMAILJS_PUBLIC_KEY
-      );
-      
-      toast({
-        title: "Message sent!",
-        description: "Thank you for reaching out. I'll get back to you soon.",
-      });
-      
-      setFormData({ name: "", email: "", message: "" });
-    } catch (error) {
-      console.error("EmailJS error:", error);
-      toast({
-        title: "Failed to send message",
-        description: "Please try again or contact me directly via email.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  return (
-    <section id="contact" className="section-padding bg-secondary/30 relative overflow-hidden">
-      <div className="floating-shape w-72 h-72 -top-36 -left-36 opacity-10" />
-      <div className="floating-shape w-64 h-64 -bottom-32 -right-32 opacity-10" style={{ animationDelay: "-7s" }} />
-      
-      <div className="container-custom relative" ref={ref}>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+    <div className="mt-7 flex flex-wrap justify-center gap-2.5">
+      <Button onClick={copyEmail} className={btn}>
+        <Copy /> Copy email
+      </Button>
+      {links.map(({ label, href, icon: Icon, external }) => (
+        <Button
+          key={label}
+          asChild
+          variant="outline"
+          className={`${btn} hover:border-primary hover:bg-transparent hover:text-primary`}
         >
-          <span className="text-primary font-medium text-sm uppercase tracking-wider">
-            Get In Touch
-          </span>
-          <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold mt-3">
-            Let's Work Together
-          </h2>
-        </motion.div>
-
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
-          {/* Contact Info */}
-          <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="space-y-8"
+          <a
+            href={href}
+            {...(external && { target: "_blank", rel: "noopener noreferrer" })}
           >
-            <div>
-              <h3 className="font-display font-bold text-2xl mb-4">
-                Let's connect
-              </h3>
-              <p className="text-muted-foreground leading-relaxed">
-                I'm always open to discussing new projects, creative ideas, or 
-                opportunities to be part of your vision. Feel free to reach out!
-              </p>
-            </div>
-
-            <div className="space-y-4">
-              {contactInfo.map((info, index) => (
-                <motion.a
-                  key={info.label}
-                  href={info.href}
-                  target={info.label === "LinkedIn" ? "_blank" : undefined}
-                  rel={info.label === "LinkedIn" ? "noopener noreferrer" : undefined}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.4, delay: 0.3 + index * 0.1 }}
-                  whileHover={{ x: 5 }}
-                  className="flex items-center gap-4 p-4 rounded-xl bg-background hover:bg-accent transition-colors group"
-                >
-                  <div className="p-3 rounded-xl bg-primary/10 group-hover:bg-primary/20 transition-colors">
-                    <info.icon className="w-5 h-5 text-primary" />
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">{info.label}</p>
-                    <p className="font-medium">{info.value}</p>
-                  </div>
-                </motion.a>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Contact Form */}
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.3 }}
-          >
-            <form onSubmit={handleSubmit} className="glass-card p-6 lg:p-8 space-y-6">
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium mb-2">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl bg-background border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                  placeholder="Your name"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium mb-2">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl bg-background border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                  placeholder="your@email.com"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="message" className="block text-sm font-medium mb-2">
-                  Message
-                </label>
-                <textarea
-                  id="message"
-                  value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  rows={5}
-                  className="w-full px-4 py-3 rounded-xl bg-background border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none"
-                  placeholder="Tell me about your project..."
-                />
-              </div>
-
-              <motion.button
-                type="submit"
-                disabled={isSubmitting}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="w-full inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-primary text-primary-foreground font-semibold disabled:opacity-70 transition-all glow-effect"
-              >
-                {isSubmitting ? (
-                  <>
-                    <motion.div
-                      animate={{ rotate: 360 }}
-                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                      className="w-5 h-5 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full"
-                    />
-                    Sending...
-                  </>
-                ) : (
-                  <>
-                    Send Message
-                    <Send className="w-4 h-4" />
-                  </>
-                )}
-              </motion.button>
-            </form>
-          </motion.div>
-        </div>
-      </div>
-    </section>
-  );
-};
+            <Icon /> {label}
+          </a>
+        </Button>
+      ))}
+    </div>
+  </section>
+);

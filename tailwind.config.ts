@@ -108,6 +108,10 @@ export default {
           "0%, 100%": { backgroundPosition: "0% 50%" },
           "50%": { backgroundPosition: "100% 50%" },
         },
+        // one letter falling into place (Contact greeting)
+        "letter-drop": {
+          from: { opacity: "0", transform: "translateY(-80px)" },
+        },
       },
       animation: {
         orbit: "orbit calc(var(--duration) * 1s) linear infinite",
@@ -120,6 +124,8 @@ export default {
         "float": "float 6s ease-in-out infinite",
         "pulse-soft": "pulse-soft 4s ease-in-out infinite",
         "gradient-shift": "gradient-shift 8s ease-in-out infinite",
+        // slight overshoot so letters "land" with a bounce; `both` keeps them hidden until their delay
+        "letter-drop": "letter-drop 0.7s cubic-bezier(.3,1.6,.5,1) both",
       },
     },
   },
